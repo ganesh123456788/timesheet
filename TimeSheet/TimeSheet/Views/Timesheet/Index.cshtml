@@ -1,0 +1,353 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timesheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(rgb(241, 210, 195), rgb(171, 196, 204));
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(219, 141, 141, 0.1);
+            position: relative;
+        }
+
+        .title {
+            display: block;
+            margin: auto;
+            width: 50%;
+            padding: 16px;
+            text-align: center;
+            color: #333;
+        }
+
+        .logout-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #f44336;
+            transition: color 0.3s;
+        }
+
+            .logout-icon:hover {
+                color: #d32f2f;
+            }
+
+        .menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        #btn {
+            color: black;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        #para {
+            background-color: white;
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 150px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+            #para a {
+                text-decoration: none;
+                color: black;
+                padding: 10px 15px;
+                display: block;
+                transition: background-color 0.3s;
+            }
+
+                #para a:hover {
+                    background-color: #c6cac5;
+                }
+
+        form {
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+            input[type="text"]:focus,
+            input[type="number"]:focus,
+            select:focus {
+                border-color: #e2fa08;
+                box-shadow: 0 0 5px rgba(214, 252, 3, 0.5);
+                outline: none;
+            }
+
+        button {
+            background-color: #0ef306;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        thead {
+            background-color: #3ce409;
+        }
+
+        th {
+            color: white;
+            font-weight: bold;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #e9ecef;
+            cursor: pointer;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        #profile-info {
+            text-align: right;
+        }
+
+            #profile-info p {
+                margin: 0;
+                padding: 0;
+            }
+
+        .time-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .time-group input {
+                width: auto;
+                margin-right: 8px;
+            }
+
+        #success-message {
+            display: none;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="logout-icon" onclick="logout()">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+        <h2 class="title">Elaboration Beta IT Soft Solutions Pvt Ltd</h2>
+        <div class="menu">
+            <button id="btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+            <div id="para">
+                <a href="@Url.Action("Index")">TimeSheet</a>
+                <a href="@Url.Action("Index", "Leaves")">Leaves</a>
+                <a href="@Url.Action("Index", "Task")">Tasks</a>
+            </div>
+        </div>
+        <div class="profile-section">
+            <div id="profile-info">
+                <p id="profile-name">Name: John.</p>
+                <p id="profile-EmployeeID">Employee ID: K5765.</p>
+                <p id="profile-designation">Designation: Associate Developer.</p>
+            </div>
+        </div>
+        <form id="timesheet-form">
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <input type="text" id="date" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="shift">Select Shift:</label>
+                <select id="shift" required>
+                    <option value="">Select Shift</option>
+                    <option value="shift1">F1: 06:00 - 14:00</option>
+                    <option value="shift2">S2: 14:00 - 22:00</option>
+                    <option value="shift3">GENERAL SHIFT: 10:00 - 19:00</option>
+                </select>
+            </div>
+            <div class="form-group time-group">
+                <label for="start-time">Start Time:</label>
+                <input type="number" id="start-hour" min="0" max="23" required placeholder="Hour" readonly>
+                <input type="number" id="start-minute" min="0" max="59" required placeholder="Minute" readonly>
+            </div>
+            <div class="form-group time-group">
+                <label for="end-time">End Time:</label>
+                <input type="text" id="end-time" disabled placeholder="End Time">
+            </div>
+            <button type="submit">Add Entry</button>
+            <div id="success-message">Entry added successfully!</div>
+        </form>
+        <table id="timesheet-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Hours Worked</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var entry in Model)
+                {
+                    <tr>
+                        <td>@entry.Date.ToString("yyyy-MM-dd")</td>
+                        <td>@entry.StartTime</td>
+                        <td>@entry.EndTime</td>
+                        <td>@entry.HoursWorked</td>
+                    </tr>
+                }
+                <!-- Entries will be added here -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            document.getElementById('date').value = now.toISOString().split('T')[0];
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            document.getElementById('start-hour').value = hours;
+            document.getElementById('start-minute').value = minutes < 10 ? '0' + minutes : minutes;
+
+            updateEndTime(hours, minutes);
+
+            document.getElementById('timesheet-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const date = document.getElementById('date').value;
+                const startHour = parseInt(document.getElementById('start-hour').value);
+                const startMinute = parseInt(document.getElementById('start-minute').value);
+                const endTimeParts = document.getElementById('end-time').value.split(':');
+                const endHour = parseInt(endTimeParts[0]);
+                const endMinute = parseInt(endTimeParts[1]);
+                const hoursWorked = calculateHoursWorked(startHour, startMinute, endHour, endMinute);
+
+                if (hoursWorked >= 8) {
+                    addEntryToTable(date, `${startHour}:${startMinute}`, `${endHour}:${endMinute}`, hoursWorked);
+                    document.getElementById('timesheet-form').reset();
+                    showSuccessMessage();
+                } else {
+                    alert("You must work at least 8 hours.");
+                }
+            });
+
+            const shiftSelect = document.getElementById('shift');
+            shiftSelect.addEventListener('change', function () {
+                const selectedShift = shiftSelect.value;
+                if (selectedShift) {
+                    updateEndTimeBasedOnShift(selectedShift);
+                }
+            });
+        });
+
+        function logout() {
+            window.location.href = 'login.html';
+        }
+
+        function updateEndTime(hours, minutes) {
+            const endTimeInput = document.getElementById('end-time');
+            const endHour = (hours + 8) % 24; // Adding 8 hours
+            const endMinute = minutes;
+            endTimeInput.value = `${endHour}:${endMinute < 10 ? '0' + endMinute : endMinute}`;
+        }
+
+        function updateEndTimeBasedOnShift(shift) {
+            const startHour = parseInt(document.getElementById('start-hour').value);
+            const startMinute = parseInt(document.getElementById('start-minute').value);
+            updateEndTime(startHour, startMinute);
+        }
+
+        function calculateHoursWorked(startHour, startMinute, endHour, endMinute) {
+            const startTotalMinutes = startHour * 60 + startMinute;
+            const endTotalMinutes = endHour * 60 + endMinute;
+            return (endTotalMinutes - startTotalMinutes) / 60; // convert to hours
+        }
+
+        function addEntryToTable(date, startTime, endTime, hoursWorked) {
+            const tableBody = document.getElementById('timesheet-table').getElementsByTagName('tbody')[0];
+            const newRow = tableBody.insertRow();
+            newRow.insertCell(0).textContent = date;
+            newRow.insertCell(1).textContent = startTime;
+            newRow.insertCell(2).textContent = endTime;
+            newRow.insertCell(3).textContent = hoursWorked.toFixed(2);
+        }
+
+        function showSuccessMessage() {
+            const successMessage = document.getElementById('success-message');
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('para');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>

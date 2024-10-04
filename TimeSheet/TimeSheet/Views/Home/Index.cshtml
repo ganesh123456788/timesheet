@@ -1,0 +1,112 @@
+﻿@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elaboration Beta IT Soft Solutions Pvt Ltd</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(rgb(241, 210, 195), rgb(171, 196, 204));
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(219, 141, 141, 0.1);
+            position: relative;
+        }
+
+        .title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .section {
+            margin: 1.5rem 0;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .link-button {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: white;
+            background-color: #0ef306;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+            .link-button:hover {
+                background-color: #09e60b;
+            }
+
+        .logout-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #f44336;
+            transition: color 0.3s;
+        }
+
+            .logout-icon:hover {
+                color: #d32f2f;
+            }
+    </style>
+</head>
+<body>
+    <center>
+        <div class="container">
+            <button class="logout-icon" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+            <h2 class="title">Elaboration Beta IT Soft Solutions Pvt Ltd <br> Management</h2>
+
+            <div class="section">
+                <h3>Timesheet Management</h3>
+                <a href="@Url.Action("Index", "TimesheetDisplay")" class="link-button">View Timesheet</a>
+            </div>
+
+            <div class="section">
+                <h3>Leaves Management</h3>
+                <a href="@Url.Action("Index", "LeaveRecords")" class="link-button">View Leaves</a>
+            </div>
+
+            <div class="section">
+                <h3>Tasks Management</h3>
+                <a href="@Url.Action("Index", "TImesheetOverview")" class="link-button">View Tasks</a>
+            </div>
+            <div class="section">
+                <h3>Employee Details</h3>
+                <a href="@Url.Action("Register", "Account")" class="link-button">Register Form</a>
+                <a href="@Url.Action("Index", "User")" class="link-button">Employees Details</a>
+
+            </div>
+        </div>
+
+        <script>
+        // Function to handle logout
+        function logout() {
+            window.location.href = '@Url.Action("Login", "Account")'; // Adjust the URL to your login page
+        }
+        </script>
+    </center>
+</body>
+</html>

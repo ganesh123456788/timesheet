@@ -1,0 +1,283 @@
+﻿@model IEnumerable<TimeSheet.Models.LeaveEntry>
+
+@{
+    ViewBag.Title = "Leaves";
+    Layout = null;
+}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(rgb(241, 210, 195), rgb(171, 196, 204));
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(219, 141, 141, 0.1);
+    }
+
+    .title {
+        display: block;
+        margin: auto;
+        width: 50%;
+        padding: 16px;
+    }
+
+    .menu {
+        position: relative;
+        top: -89%;
+        left: -25px;
+    }
+
+    #btn {
+        color: black;
+        background: transparent;
+    }
+
+    #para {
+        background-color: white;
+        display: none;
+        position: absolute;
+        top: 57.9%;
+        margin-left: 47px;
+        width: auto;
+        height: auto;
+        border-radius: 4px;
+    }
+
+        #para a {
+            text-decoration: none;
+            color: black;
+            padding: 6px 10px;
+            display: block;
+            border-bottom: 1px solid rgb(32, 32, 31);
+        }
+
+    a:hover {
+        background-color: #c6cac5;
+    }
+
+    form {
+        margin-bottom: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #555;
+        transition: color 0.3s;
+    }
+
+        label:hover {
+            color: #f8fc0b;
+        }
+
+    input[type="date"],
+    input[type="text"],
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+        input[type="date"]:focus,
+        input[type="number"]:focus {
+            border-color: #e2fa08;
+            box-shadow: 0 0 5px rgba(214, 252, 3, 0.5);
+            outline: none;
+        }
+
+    button {
+        background-color: #0ef306;
+        color: #fff;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+        button:hover {
+            background-color: #26f50b;
+            transform: scale(1.05);
+        }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    th,
+    td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        transition: background-color 0.3s;
+    }
+
+    thead {
+        background-color: #3ce409;
+    }
+
+    th {
+        color: white;
+        font-weight: bold;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tbody tr:hover {
+        background-color: #e9ecef;
+        cursor: pointer;
+    }
+
+    .profile-section {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+    }
+
+    #profile-info {
+        text-align: right;
+    }
+
+        #profile-info p {
+            margin: 0;
+            padding: 0;
+        }
+
+    .time-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .time-group input,
+        .time-group select {
+            width: auto;
+            margin-right: 7px;
+        }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timesheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h2 class="title">Elaboration Beta IT Soft Solutions Pvt Ltd</h2>
+
+        <div class="menu">
+            <button id="btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+            <div id="para">
+                <a href="@Url.Action("Index", "Timesheet")" target="_self">TimeSheet</a>
+                <a href="Index" target="_self">Leaves</a>
+                <a href="@Url.Action("Index", "Task")" target="_self">Tasks</a>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <div id="profile-info">
+                <p id="profile-name">Name: John.</p>
+                <p id="profile-EmployeeID">Employee ID: K5765.</p>
+                <p id="profile-designation">Designation: Associate Developer.</p>
+            </div>
+        </div>
+
+        <form id="timesheet-form" action="/Leave/AddEntry" method="post">
+            @using (Html.BeginForm("Index", "Leave", FormMethod.Post))
+            {
+                @Html.ValidationSummary(true)
+
+                <label>Date:</label>
+                @Html.TextBoxFor(m => m.FirstOrDefault().Date, new { type = "date" })
+                <label>Earned Leaves:</label>
+                @Html.TextBoxFor(m => m.FirstOrDefault().EarnedLeaves, new { type = "number", step = "0.01" })
+                <label>Paid Leaves:</label>
+                @Html.TextBoxFor(m => m.FirstOrDefault().PaidLeaves, new { type = "number", step = "0.01" })
+                <button type="submit">Add Entry</button>
+            }
+        </form>
+
+        <table id="timesheet-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Earned Leaves</th>
+                    <th>LOP</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var entry in Model)
+                {
+                    <tr>
+                        <td>@entry.Date.ToShortDateString()</td>
+                        <td>@entry.EarnedLeaves</td>
+                        <td>@entry.PaidLeaves</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById("para");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        function addEntry(event) {
+            event.preventDefault();
+
+            const dateInput = document.getElementById("date");
+            const earnedLeavesInput = document.getElementById("earned-leaves");
+            const paidLeavesInput = document.getElementById("paid-leaves");
+
+            const date = dateInput.value;
+            const earnedLeaves = earnedLeavesInput.value;
+            const paidLeaves = paidLeavesInput.value;
+
+            const tableBody = document.querySelector("#timesheet-table tbody");
+            const newRow = document.createElement("tr");
+
+            newRow.innerHTML = `
+                                <td>${date}</td>
+                                <td>${earnedLeaves}</td>
+                                <td>${paidLeaves}</td>
+                            `;
+
+            tableBody.appendChild(newRow);
+
+            // Clear input fields
+            dateInput.value = '';
+            earnedLeavesInput.value = '';
+            paidLeavesInput.value = '';
+        }
+    </script>
+</body>
+
+</html>

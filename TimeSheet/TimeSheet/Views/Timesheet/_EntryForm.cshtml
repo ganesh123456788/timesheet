@@ -1,0 +1,19 @@
+﻿@model TimeSheet.Models.TimesheetEntry
+
+<div>
+    @Html.LabelFor(m => m.Date)
+    @Html.TextBoxFor(m => m.Date, "{0:yyyy-MM-dd}", new { type = "date" })
+</div>
+<div>
+    @Html.LabelFor(m => m.StartTime)
+    @Html.TextBoxFor(m => m.StartTime)
+</div>
+<div>
+    @Html.LabelFor(m => m.EndTime)
+    @Html.TextBoxFor(m => m.EndTime)
+</div>
+<div>
+    @Html.LabelFor(m => m.HoursWorked)
+    @Html.TextBoxFor(m => m.HoursWorked)
+</div>
+<input type="submit" value="Add Entry" />

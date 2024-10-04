@@ -1,0 +1,139 @@
+﻿@model IEnumerable<TimeSheet.Models.Leave>
+
+@{
+    ViewBag.Title = "Leave Records";
+    Layout = null;
+}
+<style>
+    /* Additional styles for the admin page */
+    .admin-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(219, 141, 141, 0.1);
+        background-color: white;
+    }
+
+    h2 {
+        margin-bottom: 1.5rem;
+        color: #333;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    thead {
+        background-color: #3CE409;
+    }
+
+    th {
+        color: white;
+        font-weight: bold;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #F9F9F9;
+    }
+
+    tbody tr:hover {
+        background-color: #E9ECEF;
+    }
+
+    button {
+        margin-top: 1rem;
+        background-color: #FF4D4D;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        button:hover {
+            background-color: #FF1A1A;
+        }
+</style>
+<h2>Manage Leave</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Leave Type</th>
+            <th>Leave Dates</th>
+            <th>Status</th>
+            <th>Employee ID</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var leave in Model)
+        {
+            <tr>
+                <td>@leave.LeaveType</td>
+                <td>@leave.LeaveDates</td>
+                <td>@leave.Status</td>
+                <td>@leave.EmployeeId</td>
+                <td>
+                    <button class="delete-button" data-employee-id="@leave.EmployeeId" data-leave-type="@leave.LeaveType">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Clear All Button -->
+<button id="clearAllButton">Clear All Leaves</button>
+
+@section scripts {
+    <script>
+        $(document).on('click', '.delete-button', function () {
+            var employeeId = $(this).data('employee-id');
+            var leaveType = $(this).data('leave-type');
+            if (confirm("Are you sure you want to delete this leave record?")) {
+                $.ajax({
+                    url: '@Url.Action("DeleteLeave", "LeaveRecords")',
+                    type: 'POST',
+                    data: {
+                        employeeId: employeeId,
+                        leaveType: leaveType
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            alert('Leave record deleted successfully.');
+                            location.reload(); // Reload the page to see the changes
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#clearAllButton').click(function () {
+            if (confirm("Are you sure you want to clear all leave records?")) {
+                $.ajax({
+                    url: '@Url.Action("ClearAllLeaves", "LeaveRecords")',
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.success) {
+                            alert('All leave records cleared successfully.');
+                            location.reload(); // Reload the page to see the changes
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}

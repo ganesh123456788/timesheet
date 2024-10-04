@@ -1,0 +1,293 @@
+﻿@using TimeSheet.Models
+@model List<Leave>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaves</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(rgb(241, 210, 195), rgb(171, 196, 204));
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(219, 141, 141, 0.1);
+            position: relative;
+        }
+
+        .title {
+            display: block;
+            margin: auto;
+            width: 50%;
+            padding: 16px;
+            text-align: center;
+            color: #333;
+        }
+
+        .logout-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #f44336;
+            transition: color 0.3s;
+        }
+
+            .logout-icon:hover {
+                color: #d32f2f;
+            }
+
+        .menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        #btn {
+            color: black;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            top: 10px;
+        }
+
+        #para {
+            background-color: white;
+            display: none;
+            position: absolute;
+            top: 40px; /* Adjust for dropdown spacing */
+            left: 0;
+            width: 150px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Ensure dropdown appears above other content */
+        }
+
+            #para a {
+                text-decoration: none;
+                color: black;
+                padding: 10px 15px;
+                display: block;
+                transition: background-color 0.3s;
+            }
+
+                #para a:hover {
+                    background-color: #c6cac5;
+                }
+
+        form {
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+            input[type="text"]:focus,
+            input[type="number"]:focus,
+            select:focus {
+                border-color: #e2fa08;
+                box-shadow: 0 0 5px rgba(214, 252, 3, 0.5);
+                outline: none;
+            }
+
+        button {
+            background-color: #0ef306;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        #profile-info {
+            text-align: right;
+        }
+
+            #profile-info p {
+                margin: 0;
+                padding: 0;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        thead {
+            background-color: #3ce409;
+        }
+
+        th {
+            color: white;
+            font-weight: bold;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #e9ecef;
+            cursor: pointer;
+        }
+
+        #success-message {
+            display: none;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="logout-icon" onclick="logout()">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+        <h2 class="title">Elaboration Beta IT Soft Solutions Pvt Ltd</h2>
+        <div class="menu">
+            <button id="btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+            <div id="para">
+                <a href="@Url.Action("Index", "Timesheet")" target="_self">TimeSheet</a>
+                <a href="@Url.Action("Index")" target="_self">Leaves</a>
+                <a href="@Url.Action("Index", "Task")" target="_self">Tasks</a>
+            </div>
+        </div>
+        <div class="profile-section">
+            <div id="profile-info">
+                <p id="profile-name">Name: John.</p>
+                <p id="profile-EmployeeID">Employee ID: K5765.</p>
+                <p id="profile-designation">Designation: Associate Developer.</p>
+            </div>
+        </div>
+        <form id="leaves-form">
+            <div class="form-group">
+                <label for="leave-type">Select Leave Type:</label>
+                <select id="leave-type" required>
+                    <option value="">Select Leave Type</option>
+                    <option value="sick">Sick Leave</option>
+                    <option value="casual">Casual Leave</option>
+                    <option value="earned">Earned Leave</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="leave-dates">Leave Dates:</label>
+                <input type="text" id="leave-dates" required placeholder="e.g., 2023-10-01 to 2023-10-05">
+            </div>
+            <button type="submit">Submit Leave Request</button>
+            <div id="success-message">Leave request submitted successfully!</div>
+        </form>
+        <table id="leaves-table">
+            <thead>
+                <tr>
+                    <th>Leave Type</th>
+                    <th>Leave Dates</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Entries will be added here -->
+                @foreach (var leave in Model)
+                {
+                    <tr>
+                        <td>@leave.LeaveType</td>
+                        <td>@leave.LeaveDates</td>
+                        <td>@leave.Status</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('leaves-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const leaveType = document.getElementById('leave-type').value;
+                const leaveDates = document.getElementById('leave-dates').value;
+                const employeeId = document.getElementById('profile-EmployeeID').innerText.split(': ')[1];
+
+                addEntryToTable(leaveType, leaveDates, 'Pending', employeeId);
+                this.reset();
+                showSuccessMessage();
+            });
+        });
+
+        function logout() {
+            window.location.href = '@Url.Action("Login", "Account")';
+        }
+
+        function toggleMenu() {
+            const para = document.getElementById('para');
+            para.style.display = para.style.display !== 'block' ? 'block' : 'none';
+        }
+
+        function addEntryToTable(leaveType, leaveDates, status, employeeId) {
+            const tbody = document.querySelector('#leaves-table tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                        <td>${leaveType}</td>
+                        <td>${leaveDates}</td>
+                        <td>${status}</td>
+                    `;
+            tbody.appendChild(row);
+        }
+
+        function showSuccessMessage() {
+            const successMessage = document.getElementById('success-message');
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

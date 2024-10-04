@@ -1,0 +1,232 @@
+﻿@{
+    ViewBag.Title = "About";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holiday List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        /* styles.css */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(rgb(241, 210, 195), rgb(171, 196, 204));
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(219, 141, 141, 0.1);
+            position: relative;
+            background-color: transparent; /* Added for better visibility */
+        }
+
+        .title {
+            display: block;
+            margin: auto;
+            width: 50%;
+            padding: 16px;
+            text-align: center;
+            color: #333;
+        }
+
+        .logout-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #F44336;
+            transition: color 0.3s;
+        }
+
+            .logout-icon:hover {
+                color: #D32F2F;
+            }
+
+        .menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        #btn {
+            color: black;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        #para {
+            background-color: white;
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 150px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+            #para a {
+                display: block;
+                padding: 8px;
+                color: black; /* Link color */
+                text-decoration: none; /* Remove underline */
+            }
+
+                #para a:hover {
+                    background-color: #f1f1f1; /* Highlight on hover */
+                }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse; /* Ensures borders are merged */
+            margin-top: 20px;
+            border: 2px solid #ddd; /* Adds a border around the table */
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd; /* Adds border to each cell */
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1; /* Highlight row on hover */
+        }
+
+        tbody tr:last-child {
+            border-bottom: none; /* Optional: to remove double border on the last row */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="logout-icon" onclick="logout()" aria-label="Logout">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+        <h2 class="title">Elaboration Beta IT Soft Solutions Pvt Ltd</h2>
+        <div class="menu">
+            <button id="btn" onclick="toggleMenu()" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+            <div id="para">
+                <a href="@Url.Action("Index", "Timesheet")">TimeSheet</a>
+                <a href="@Url.Action("Index", "Leaves")">Leaves</a>
+                <a href="@Url.Action("Index", "Task")">Tasks</a>
+            </div>
+        </div>
+        
+        
+        <h1>Holiday List</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Holiday Name</th>
+                    <th>Date</th>
+                    <th>Day</th>
+                    <th>Month</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Holiday Data -->
+                <tr>
+                    <td>New Year</td>
+                    <td>01/01/2024</td>
+                    <td>Monday</td>
+                    <td rowspan="3">January</td>
+                </tr>
+                <tr>
+                    <td>Sankranthi</td>
+                    <td>15/01/2024</td>
+                    <td>Monday</td>
+                </tr>
+                <tr>
+                    <td>Republic Day</td>
+                    <td>26/01/2024</td>
+                    <td>Friday</td>
+                </tr>
+                <tr>
+                    <td>Holi</td>
+                    <td>25/03/2024</td>
+                    <td>Monday</td>
+                    <td>March</td>
+                </tr>
+                <tr>
+                    <td>Ugadi</td>
+                    <td>08/04/2024</td>
+                    <td>Monday</td>
+                    <td rowspan="2">April</td>
+                </tr>
+                <tr>
+                    <td>Ramzan</td>
+                    <td>11/04/2024</td>
+                    <td>Thursday</td>
+                </tr>
+                <tr>
+                    <td>May Day</td>
+                    <td>01/05/2024</td>
+                    <td>Wednesday</td>
+                    <td rowspan="2">May</td>
+                </tr>
+                <tr>
+                    <td>Elections Day</td>
+                    <td>13/05/2024</td>
+                    <td>Monday</td>
+                </tr>
+                <tr>
+                    <td>Independence Day</td>
+                    <td>15/08/2024</td>
+                    <td>Thursday</td>
+                    <td rowspan="1">August</td>
+                </tr>
+                <tr>
+                    <td>Gandhi Jayanthi</td>
+                    <td>02/10/2024</td>
+                    <td>Wednesday</td>
+                    <td rowspan="2">October</td>
+                </tr>
+                <tr>
+                    <td>Diwali</td>
+                    <td>31/10/2024</td>
+                    <td>Thursday</td>
+                </tr>
+                <tr>
+                    <td>Christmas</td>
+                    <td>25/12/2024</td>
+                    <td>Wednesday</td>
+                    <td rowspan="1">December</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function logout() {
+            window.location.href = '@Url.Action("Login", "Account")';
+        }
+        function toggleMenu() {
+            const menu = document.getElementById('para');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>
